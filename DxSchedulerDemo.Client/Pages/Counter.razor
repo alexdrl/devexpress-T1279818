@@ -1,0 +1,26 @@
+﻿@rendermode InteractiveWebAssembly
+@page "/counter"
+@using DxSchedulerDemo.Client.Data
+@using DxSchedulerDemo.Client.Utils
+
+<span>Appointment Count: @apptCount</span>
+
+<span>Interactive mode: @RendererInfo.Name</span>
+
+<div style="width: 100%; height: 50vh;">
+    <DxScheduler @ref="Scheduler"
+    StartDate="currentDate"
+    StartDateChanged="OnStartDateChanged"
+    ActiveViewType="activeType"
+    ActiveViewTypeChanged="OnActiveViewChanged"
+    DataStorage="@DataStorage"
+    CssClass="w-100 h-100">
+        <DxSchedulerDayView DayCount="1" ShowWorkTimeOnly="false"></DxSchedulerDayView>
+        <DxSchedulerTimelineView Duration="TimeSpan.FromDays(1)">
+            <Scales>
+                <DxSchedulerTimeScale Unit="SchedulerTimeScaleUnit.Day" UnitCount="1" />
+                <DxSchedulerTimeScale Unit="SchedulerTimeScaleUnit.Hour" UnitCount="1" />
+            </Scales>
+        </DxSchedulerTimelineView>
+    </DxScheduler>
+</div>
