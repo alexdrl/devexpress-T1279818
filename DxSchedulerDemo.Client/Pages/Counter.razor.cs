@@ -31,12 +31,12 @@ namespace DxSchedulerDemo.Client.Pages
             }
         };
 
-        protected override async Task OnAfterRenderAsync(bool firstRender)
+        protected override void OnAfterRender(bool firstRender)
         {
             if (firstRender)
             {
                 LoadData();
-                await ScrollToFirstAppointment();
+                ScrollToFirstAppointment();
             }
         }
         protected override void OnInitialized()
@@ -48,14 +48,16 @@ namespace DxSchedulerDemo.Client.Pages
         {
             currentDate = newStartDate;
             LoadAppointments();
+            ScrollToFirstAppointment();
         }
 
-        async Task OnActiveViewChanged(SchedulerViewType newView)
+        void OnActiveViewChanged(SchedulerViewType newView)
         {
             activeType = newView;
             LoadAppointments();
-            await ScrollToFirstAppointment();
+            ScrollToFirstAppointment();
         }
+
         void LoadAppointments()
         {
             switch (activeType)
@@ -90,7 +92,7 @@ namespace DxSchedulerDemo.Client.Pages
             return this.DataSource.OrderBy(ds => ds.StartDate).FirstOrDefault();
         }
 
-        async Task ScrollToFirstAppointment()
+        void ScrollToFirstAppointment()
         {
             var appointment = GetFirstAppointment();
             if (appointment == null || this.Scheduler == null)
@@ -98,11 +100,7 @@ namespace DxSchedulerDemo.Client.Pages
                 return;
             }
 
-            await Task.Run(async () =>
-            {
-                await Task.Delay(150);
-                await InvokeAsync(() => Scheduler.ScrollTo(appointment.StartDate));
-            });
+            Scheduler.ScrollTo(appointment.StartDate);
         }
     }
 }
